@@ -19,6 +19,7 @@ public class FeedingFrenzy {
     public FeedingFrenzy(){
         bg.setScale(1);;
         canvas = new CanvasWindow("FeedingFrenzy!", bg.getImageWidth(), bg.getImageHeight());
+        System.out.println(bg.getImageHeight());
         
         canvas.add(bg);
         canvas.onMouseMove(event ->{
