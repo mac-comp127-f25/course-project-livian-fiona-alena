@@ -4,14 +4,14 @@ import edu.macalester.graphics.GraphicsObject;
 import edu.macalester.graphics.Image;
 
 public class RandomFish {
-    private int fishSize;
+    
 
     private GraphicsObject otherFishShape;
     private double x;
     private double y;
     private double dx;
     private Random randY = new Random();
-    private String pathname = new String();
+    
 
     public RandomFish(
         double centerX,
