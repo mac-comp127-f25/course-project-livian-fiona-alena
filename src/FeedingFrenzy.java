@@ -7,7 +7,7 @@ public class FeedingFrenzy {
     public static final int CANVAS_HEIGHT = 600;
     private final CanvasWindow canvas;
     private FishGraphic fishBall = new FishGraphic(300, 380,CANVAS_WIDTH, CANVAS_HEIGHT, -200, 100);
-    private RandomFish others = new RandomFish(600, 0, 600, 600, 100,"bluefish.png",0.4);
+    private RandomFish others = new RandomFish(600, 0, 100,"bluefish.png",2);
 
 
 
