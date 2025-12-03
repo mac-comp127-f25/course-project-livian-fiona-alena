@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsObject;
 import edu.macalester.graphics.Image;
@@ -8,14 +11,14 @@ public class FeedingFrenzy {
     private final CanvasWindow canvas;
     private FishGraphic fishBall = new FishGraphic(300, 380,CANVAS_WIDTH, CANVAS_HEIGHT, -200, 100);
     private RandomFish others = new RandomFish(600, 0, 100,"bluefish.png",2);
-
-
+    private List<String> smallFishNameList = new ArrayList<>();
 
     Image bg = new Image("seabedBg.jpg");
     
     public FeedingFrenzy(){
         bg.setScale(1);;
         canvas = new CanvasWindow("FeedingFrenzy!", bg.getImageWidth(), bg.getImageHeight());
+        System.out.println(bg.getImageHeight());
         
         canvas.add(bg);
         canvas.onMouseMove(event ->{
@@ -24,6 +27,7 @@ public class FeedingFrenzy {
         showFish();
         showRandomFish();
         animate();
+        setSmallFishNameList();
 
     }
 
@@ -39,9 +43,18 @@ public class FeedingFrenzy {
         canvas.animate((dt)->{
         dt = Math.min(dt, 0.1);
         others.updatePosition(dt);
-    });
-
+        });
     }
+
+    public void setSmallFishNameList() {
+        smallFishNameList.add("bluefish.png");
+        smallFishNameList.add("clownFish.png");
+        smallFishNameList.add("middlefih.png");
+    }
+
+
+
+
     public static void main(String[] args){
         new FeedingFrenzy();
     }

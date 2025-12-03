@@ -18,8 +18,8 @@ public class RandomFish {
     ){
         otherFishShape = new Image(pathname);
         otherFishShape.setScale(fishSize);
-        this.x=centerX;
-        this.y= centerY;
+        this.x = centerX;
+        this.y = centerY;
         this.dx = dx;
     }
     
