@@ -1,5 +1,8 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsObject;
@@ -10,8 +13,8 @@ public class FeedingFrenzy {
     public static final int CANVAS_HEIGHT = 600;
     private final CanvasWindow canvas;
     private FishGraphic fishBall = new FishGraphic(300, 380,CANVAS_WIDTH, CANVAS_HEIGHT, -200, 100);
-    private RandomFish others = new RandomFish(600, 0, 100,"bluefish.png",2);
-    private List<String> smallFishNameList = new ArrayList<>();
+    private List<String> smallFishNameList = List.of("bluefish.png","clownFish.png","middlefish.png");
+   
 
     Image bg = new Image("seabedBg.jpg");
     
@@ -19,6 +22,17 @@ public class FeedingFrenzy {
         bg.setScale(1);;
         canvas = new CanvasWindow("FeedingFrenzy!", bg.getImageWidth(), bg.getImageHeight());
         System.out.println(bg.getImageHeight());
+        Map<String , Double> fishSizeMap = new HashMap<>();
+        fishSizeMap.put("bluefish.png",200.0);
+        String fishName;
+        
+
+
+        Random rand = new Random();
+        List<RandomFish> randomFishs;
+        fishName = smallFishNameList.get(rand.nextInt(smallFishNameList.size()));
+        RandomFish others = new RandomFish(600, rand.nextInt(0,600), 100,fishName,fishSizeMap.get(fishName));
+
         
         canvas.add(bg);
         canvas.onMouseMove(event ->{
@@ -27,9 +41,11 @@ public class FeedingFrenzy {
         showFish();
         showRandomFish();
         animate();
-        setSmallFishNameList();
-
+        
+        
     }
+
+    
 
     private void showFish() {
         canvas.add(fishBall.getFishGraphics());
@@ -45,12 +61,11 @@ public class FeedingFrenzy {
         others.updatePosition(dt);
         });
     }
+    private void populateFish(){
 
-    public void setSmallFishNameList() {
-        smallFishNameList.add("bluefish.png");
-        smallFishNameList.add("clownFish.png");
-        smallFishNameList.add("middlefih.png");
     }
+
+
 
 
 
