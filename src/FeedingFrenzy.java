@@ -3,7 +3,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsObject;
 import edu.macalester.graphics.Image;
@@ -21,15 +20,12 @@ public class FeedingFrenzy {
     public FeedingFrenzy(){
         bg.setScale(1);;
         canvas = new CanvasWindow("FeedingFrenzy!", bg.getImageWidth(), bg.getImageHeight());
-        
         fishSizeMap.put("bluefish.png",0.2);
         fishSizeMap.put("clownFish.png", 0.1);
         fishSizeMap.put("middlefish.png", 0.1);
-        
-        for (int i = 0; i < 20; i++) {
+        for(int i =0; i <20; i++){
             addRandomFish();
         }
-        
         canvas.add(bg);
         canvas.onMouseMove(event ->{
             fishBall.setCenter(event.getPosition().getX(), event.getPosition().getY());
@@ -77,13 +73,7 @@ public class FeedingFrenzy {
             npcFish.reset_dx_ForHorizontalHit();
             npcFish.reset_dy_ForHorizontalHit();
         }
-       
     }
-
-
-
-
-
 
     public static void main(String[] args){
         new FeedingFrenzy();

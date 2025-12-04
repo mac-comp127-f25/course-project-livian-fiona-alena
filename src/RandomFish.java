@@ -1,5 +1,4 @@
 import java.util.Random;
-
 import edu.macalester.graphics.GraphicsObject;
 import edu.macalester.graphics.Image;
 
@@ -21,7 +20,6 @@ public class RandomFish {
         otherFishShape.setScale(fishSize);
         this.x = centerX;
         this.y = centerY;
-        
     }
 
     public double getCenterX(){
@@ -44,8 +42,6 @@ public class RandomFish {
         return dy = rand.nextDouble(-50,50);
     }
 
-    
-
     public double reset_dy_ForVerticalHit(){
         return this.dy = -dy;
     }
@@ -53,7 +49,6 @@ public class RandomFish {
     public void updatePosition(double dt) {
         x += dx*dt;
         y += dy *dt;
-        
         otherFishShape.setCenter(x, y);
     }
 
