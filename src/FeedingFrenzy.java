@@ -1,10 +1,7 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import edu.macalester.graphics.CanvasWindow;
-import edu.macalester.graphics.GraphicsObject;
 import edu.macalester.graphics.Image;
 
 public class FeedingFrenzy {
@@ -12,7 +9,7 @@ public class FeedingFrenzy {
     public static final int CANVAS_HEIGHT = 912;
     private final CanvasWindow canvas;
     private Fish player = new Fish(300, 380, "ClownFish.png", 0.1);
-    private Map<String, Double> fishSizeMap = new HashMap<>();
+    private List<FishType> npcFishTypes;
     private Random rand = new Random();
     private List<Fish> npcFish = new ArrayList<>();
     private Image bg = new Image("seabedBg.jpg");
@@ -20,10 +17,12 @@ public class FeedingFrenzy {
     public FeedingFrenzy(){
         bg.setScale(2);
         canvas = new CanvasWindow("FeedingFrenzy!", CANVAS_WIDTH, CANVAS_HEIGHT);
-        fishSizeMap.put("bluefish.png",0.2);
-        fishSizeMap.put("tuna.png", 0.3);
-        fishSizeMap.put("middlefish.png", 0.2);
-        fishSizeMap.put("shark.png", 0.5);
+        npcFishTypes = List.of(
+            new FishType("bluefish.png", 0.2),
+            new FishType("tuna.png", 0.3),
+            new FishType("middlefish.png", 0.2),
+            new FishType("shark.png", 0.5)
+        );
         for(int i =0; i <20; i++){
             addRandomFish();
         }
@@ -39,10 +38,8 @@ public class FeedingFrenzy {
     }
 
     private void addRandomFish(){
-        List<String> fishNames = new ArrayList<>(fishSizeMap.keySet());
-        String fishName = fishNames.get(rand.nextInt(fishNames.size()));
-        double fishSize = fishSizeMap.get(fishName);
-        Fish newFish = new Fish(CANVAS_WIDTH, rand.nextInt(0, CANVAS_HEIGHT), fishName, fishSize);
+        FishType fishType = npcFishTypes.get(rand.nextInt(npcFishTypes.size()));
+        Fish newFish = new Fish(CANVAS_WIDTH, rand.nextInt(0, CANVAS_HEIGHT), fishType.getImagePath(), fishType.getScale());
         npcFish.add(newFish);
     }
 
