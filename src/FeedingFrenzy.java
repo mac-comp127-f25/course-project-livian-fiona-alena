@@ -11,10 +11,10 @@ public class FeedingFrenzy {
     public static final int CANVAS_WIDTH = 878;
     public static final int CANVAS_HEIGHT = 912;
     private final CanvasWindow canvas;
-    private FishGraphic fishBall = new FishGraphic(300, 380,CANVAS_WIDTH, CANVAS_HEIGHT, -200, 100);
+    private Fish player = new Fish(300, 380, "ClownFish.png", 0.1);
     private Map<String, Double> fishSizeMap = new HashMap<>();
     private Random rand = new Random();
-    private List<RandomFish> randomFishs = new ArrayList<>();
+    private List<Fish> npcFish = new ArrayList<>();
     private Image bg = new Image("seabedBg.jpg");
     
     public FeedingFrenzy(){
@@ -29,7 +29,7 @@ public class FeedingFrenzy {
         }
         canvas.add(bg);
         canvas.onMouseMove(event ->{
-            fishBall.setCenter(event.getPosition().getX(), event.getPosition().getY());
+            player.setCenter(event.getPosition().getX(), event.getPosition().getY());
         });
         showFish();
         showRandomFish();
@@ -42,31 +42,31 @@ public class FeedingFrenzy {
         List<String> fishNames = new ArrayList<>(fishSizeMap.keySet());
         String fishName = fishNames.get(rand.nextInt(fishNames.size()));
         double fishSize = fishSizeMap.get(fishName);
-        RandomFish newFish = new RandomFish(CANVAS_WIDTH, rand.nextInt(0, CANVAS_HEIGHT), fishName, fishSize);
-        randomFishs.add(newFish);
+        Fish newFish = new Fish(CANVAS_WIDTH, rand.nextInt(0, CANVAS_HEIGHT), fishName, fishSize);
+        npcFish.add(newFish);
     }
 
     private void showFish() {
-        canvas.add(fishBall.getFishGraphics());
+        canvas.add(player.getGraphics());
     }
 
     private void showRandomFish(){
-        for (RandomFish npcFish:randomFishs) {
-            canvas.add(npcFish.getRandomFishGraphics());
+        for (Fish npc : npcFish) {
+            canvas.add(npc.getGraphics());
         }
     }
 
     private void animate(){
         canvas.animate(dt->{
             dt = Math.min(dt, 0.1);
-            for(RandomFish npcFish :randomFishs){
-                npcFish.updatePosition(dt); 
-                ifHit(npcFish);
+            for(Fish npc : npcFish){
+                npc.updatePosition(dt); 
+                ifHit(npc);
             }
         });
     }
 
-    public void ifHit(RandomFish npcFish){
+    public void ifHit(Fish npcFish){
         // Consider adding this to RandomFish as getRightX():
         // npcFish.getRandomFishGraphics().getBoundsInParent().getMaxX()   // <- to compute the right edge of a graphics object
 
