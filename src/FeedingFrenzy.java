@@ -8,8 +8,8 @@ import edu.macalester.graphics.GraphicsObject;
 import edu.macalester.graphics.Image;
 
 public class FeedingFrenzy {
-    public static final int CANVAS_WIDTH = 600;
-    public static final int CANVAS_HEIGHT = 600;
+    public static final int CANVAS_WIDTH = 878;
+    public static final int CANVAS_HEIGHT = 912;
     private final CanvasWindow canvas;
     private FishGraphic fishBall = new FishGraphic(300, 380,CANVAS_WIDTH, CANVAS_HEIGHT, -200, 100);
     private Map<String , Double> fishSizeMap = new HashMap<>();
@@ -18,11 +18,13 @@ public class FeedingFrenzy {
     private Image bg = new Image("seabedBg.jpg");
     
     public FeedingFrenzy(){
-        bg.setScale(1);;
-        canvas = new CanvasWindow("FeedingFrenzy!", bg.getImageWidth(), bg.getImageHeight());
+        bg.setScale(2);
+        canvas = new CanvasWindow("FeedingFrenzy!", CANVAS_WIDTH, CANVAS_HEIGHT);
+        System.out.println(bg.getImageWidth());
         fishSizeMap.put("bluefish.png",0.2);
-        fishSizeMap.put("clownFish.png", 0.1);
-        fishSizeMap.put("middlefish.png", 0.1);
+        fishSizeMap.put("tuna.png", 0.3);
+        fishSizeMap.put("middlefish.png", 0.2);
+        fishSizeMap.put("shark.png", 0.5);
         for(int i =0; i <20; i++){
             addRandomFish();
         }
@@ -41,7 +43,7 @@ public class FeedingFrenzy {
         List<String> fishNames = new ArrayList<>(fishSizeMap.keySet());
         String fishName = fishNames.get(rand.nextInt(fishNames.size()));
         double fishSize = fishSizeMap.get(fishName);
-        RandomFish newFish = new RandomFish(600, rand.nextInt(0, 600), fishName, fishSize);
+        RandomFish newFish = new RandomFish(CANVAS_WIDTH, rand.nextInt(0, CANVAS_HEIGHT), fishName, fishSize);
         randomFishs.add(newFish);
     }
 
@@ -66,9 +68,14 @@ public class FeedingFrenzy {
     }
 
     public void ifHit(RandomFish npcFish){
-       if (npcFish.getCenterY()<0 || npcFish.getCenterY()>CANVAS_HEIGHT){
+        // Consider adding this to RandomFish as getRightX():
+        // npcFish.getRandomFishGraphics().getBoundsInParent().getMaxX()   // <- to compute the right edge of a graphics object
+
+        // Consider renaming RandomFish -> NPCFish
+
+        if (npcFish.getCenterY()<0 || npcFish.getCenterY()>CANVAS_HEIGHT){
             npcFish.reset_dy_ForVerticalHit();
-        } else if(npcFish.getCenterX()<-100){
+        } else if(npcFish.getCenterX()<-10){
             npcFish.reset_X_ForHorizontalHit();
             npcFish.reset_dx_ForHorizontalHit();
             npcFish.reset_dy_ForHorizontalHit();

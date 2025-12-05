@@ -31,7 +31,7 @@ public class RandomFish {
     }
 
     public double reset_X_ForHorizontalHit(){
-        return x = 600;
+        return x = FeedingFrenzy.CANVAS_WIDTH;
     }
 
     public double reset_dx_ForHorizontalHit(){

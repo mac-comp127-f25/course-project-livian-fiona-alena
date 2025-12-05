@@ -42,7 +42,7 @@ public class FishGraphic {
     public void updatePosition(double dt) {
         this.x=x + dx * dt;
         this.y=y + dy * dt;
-        if (0 <= x && x <=600 && 0 <= y && y <= 800){
+        if (0 <= x && x <=FeedingFrenzy.CANVAS_WIDTH && 0 <= y && y <=FeedingFrenzy.CANVAS_HEIGHT){
             fishShape.setCenter(x,y);
             
         }
