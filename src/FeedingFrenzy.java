@@ -12,7 +12,7 @@ public class FeedingFrenzy {
     public static final int CANVAS_HEIGHT = 912;
     private final CanvasWindow canvas;
     private FishGraphic fishBall = new FishGraphic(300, 380,CANVAS_WIDTH, CANVAS_HEIGHT, -200, 100);
-    private Map<String , Double> fishSizeMap = new HashMap<>();
+    private Map<String, Double> fishSizeMap = new HashMap<>();
     private Random rand = new Random();
     private List<RandomFish> randomFishs = new ArrayList<>();
     private Image bg = new Image("seabedBg.jpg");
@@ -20,7 +20,6 @@ public class FeedingFrenzy {
     public FeedingFrenzy(){
         bg.setScale(2);
         canvas = new CanvasWindow("FeedingFrenzy!", CANVAS_WIDTH, CANVAS_HEIGHT);
-        System.out.println(bg.getImageWidth());
         fishSizeMap.put("bluefish.png",0.2);
         fishSizeMap.put("tuna.png", 0.3);
         fishSizeMap.put("middlefish.png", 0.2);
