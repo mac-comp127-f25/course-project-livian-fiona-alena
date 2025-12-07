@@ -30,8 +30,7 @@ public class Fish {
         shape.setScale(fishSize);
         this.x = centerX;
         this.y = centerY;
-        Image img = new Image(pathname);
-        img.setScale(fishSize);
+        shape.setScale(fishSize);
 
         double base =135;
         radiusX = base * fishSize;
@@ -40,6 +39,8 @@ public class Fish {
         hitBox = new Ellipse(x-radiusX, y-radiusY, radiusX*2, radiusY*2);
         hitBox.setStrokeColor(Color.RED);
         hitBox.setFilled(false);
+
+        scale = fishSize;
     }
 
     public double getCenterX(){
@@ -74,8 +75,11 @@ public class Fish {
     }
 
     public void setCenter(double newX, double newY ){
+        this.x = newX;
+        this.y = newY;
         shape.setCenter(newX,newY );
         hitBox.setCenter(newX,newY);
+
     }
 
     public Point getCenter(){
@@ -89,5 +93,39 @@ public class Fish {
     public Ellipse getHitbox(){
         return hitBox;
     }
+
+    private double overlapAmount(Fish other){
+        //(dx/rx)^2 + (dy/ry)^2 <= 1 means in the ellipse, vice versa, out of ellipse
+        double dx = this.getCenterX() - other.getCenterX();
+        double dy = this.getCenterY() - other.getCenterY();
+
+        double rx = this.radiusX + other.radiusX;
+        double ry = this.radiusY + other.radiusY;
+
+        double normalizeX = dx/rx;
+        double normalizeY = dy/ry;
+
+        return normalizeX*normalizeX+normalizeY*normalizeY;
+    }
+
+    public void interactWith(Fish other){
+        if (this.scale == 0 || other.scale ==0){
+            return;
+        }
+        if(overlapAmount(other)>1.0){
+            return;
+        }
+        if (this.scale > other.scale){
+            other.scale = 0;
+        }else if (this.scale < other.scale){
+            this.scale = 0;
+        }else{
+            return;
+        }
+    }
+    public double getScale(){
+        return this.scale;
+    }
+
 
 }

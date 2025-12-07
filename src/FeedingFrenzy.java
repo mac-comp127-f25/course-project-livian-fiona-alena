@@ -8,7 +8,7 @@ public class FeedingFrenzy {
     public static final int CANVAS_WIDTH = 878;
     public static final int CANVAS_HEIGHT = 912;
     private final CanvasWindow canvas;
-    private Fish player = new Fish(300, 380, "ClownFish.png", 0.1);
+    private Fish player = new Fish(300, 380, "ClownFish.png", 0.3);
     private List<FishType> npcFishTypes;
     private Random rand = new Random();
     private List<Fish> npcFish = new ArrayList<>();
@@ -62,6 +62,7 @@ public class FeedingFrenzy {
                 npc.updatePosition(dt); 
                 ifHit(npc);
             }
+            handleFishInteraction();
         });
     }
 
@@ -77,6 +78,22 @@ public class FeedingFrenzy {
             npcFish.reset_X_ForHorizontalHit();
             npcFish.reset_dx_ForHorizontalHit();
             npcFish.reset_dy_ForHorizontalHit();
+        }
+    }
+
+    private void handleFishInteraction(){
+    for (int i = 0; i < npcFish.size(); i++) {
+        Fish npc = npcFish.get(i);
+        player.interactWith(npc);
+        }
+    
+
+    for (int i = npcFish.size()-1; i>=0; i--){
+        Fish f = npcFish.get(i);
+        if (f.getScale()==0){
+            canvas.remove(f.getGraphics());
+            npcFish.remove(i);
+            }
         }
     }
 
