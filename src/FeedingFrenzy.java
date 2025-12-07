@@ -82,13 +82,13 @@ public class FeedingFrenzy {
     }
 
     private void handleFishInteraction(){
-    for (int i = 0; i < npcFish.size(); i++) {
+        for (int i = 0; i < npcFish.size(); i++) {
         Fish npc = npcFish.get(i);
         player.interactWith(npc);
         }
     
 
-    for (int i = npcFish.size()-1; i>=0; i--){
+        for (int i = npcFish.size()-1; i>=0; i--){
         Fish f = npcFish.get(i);
         if (f.getScale()==0){
             canvas.remove(f.getGraphics());

@@ -11,7 +11,7 @@ public class Fish {
     private double x;
     private double y;
     private Random rand = new Random();
-    private double dx=rand.nextDouble(-100,-40);;
+    private double dx=rand.nextDouble(-50,-40);;
     private double dy= rand.nextDouble(-50,50);
 
     private double scale;
@@ -94,7 +94,7 @@ public class Fish {
         return hitBox;
     }
 
-    private double overlapAmount(Fish other){
+    private boolean overlapAmount(Fish other){
         //(dx/rx)^2 + (dy/ry)^2 <= 1 means in the ellipse, vice versa, out of ellipse
         double dx = this.getCenterX() - other.getCenterX();
         double dy = this.getCenterY() - other.getCenterY();
@@ -104,25 +104,35 @@ public class Fish {
 
         double normalizeX = dx/rx;
         double normalizeY = dy/ry;
-
-        return normalizeX*normalizeX+normalizeY*normalizeY;
+        double overlapValue = normalizeX*normalizeX+normalizeY*normalizeY;
+        if (overlapValue <= 1.0){
+            return true;
+        } else{
+            return false;
+        }
     }
 
     public void interactWith(Fish other){
         if (this.scale == 0 || other.scale ==0){
             return;
         }
-        if(overlapAmount(other)>1.0){
+        if(!this.overlapAmount(other)){
             return;
         }
         if (this.scale > other.scale){
-            other.scale = 0;
+            goDie(other);
+
         }else if (this.scale < other.scale){
-            this.scale = 0;
-        }else{
-            return;
+            goDie(this);
         }
     }
+
+    public void goDie(Fish f){
+        f.scale = 0;
+        f.shape.setScale(0);
+
+    }
+
     public double getScale(){
         return this.scale;
     }
