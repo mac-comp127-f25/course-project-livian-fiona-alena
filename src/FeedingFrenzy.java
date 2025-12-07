@@ -45,11 +45,13 @@ public class FeedingFrenzy {
 
     private void showFish() {
         canvas.add(player.getGraphics());
+        canvas.add(player.getHitbox());
     }
 
     private void showRandomFish(){
         for (Fish npc : npcFish) {
             canvas.add(npc.getGraphics());
+            canvas.add(npc.getHitbox());
         }
     }
 
@@ -77,6 +79,7 @@ public class FeedingFrenzy {
             npcFish.reset_dy_ForHorizontalHit();
         }
     }
+
 
     public static void main(String[] args){
         new FeedingFrenzy();
