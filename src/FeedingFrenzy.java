@@ -8,7 +8,7 @@ public class FeedingFrenzy {
     public static final int CANVAS_WIDTH = 878;
     public static final int CANVAS_HEIGHT = 912;
     private final CanvasWindow canvas;
-    private Fish player = new Fish(300, 380, "ClownFish.png", 0.3);
+    private Fish player = new Fish(300, 380, "ClownFish.png", 0.25);
     private List<FishType> npcFishTypes;
     private Random rand = new Random();
     private List<Fish> npcFish = new ArrayList<>();
@@ -19,9 +19,9 @@ public class FeedingFrenzy {
         canvas = new CanvasWindow("FeedingFrenzy!", CANVAS_WIDTH, CANVAS_HEIGHT);
         npcFishTypes = List.of(
             new FishType("bluefish.png", 0.2),
-            new FishType("tuna.png", 0.3),
+            new FishType("tuna.png", 0.4),
             new FishType("middlefish.png", 0.2),
-            new FishType("shark.png", 0.5)
+            new FishType("shark.png", 0.6)
         );
         for(int i =0; i <20; i++){
             addRandomFish();
