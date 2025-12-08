@@ -2,10 +2,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import edu.macalester.graphics.CanvasWindow;
+import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.Image;
 // 1. begining page, "start" button
 // 2. "restart" page
 // 3. a bar that is showing the fishes that we are able to eat right now.
+// the reappear thing from the right
+// rectangle holding the fish displayed
+// hitbox size of middle fish and player fish
 public class FeedingFrenzy {
     public static final int CANVAS_WIDTH = 878;
     public static final int CANVAS_HEIGHT = 912;
@@ -15,28 +19,33 @@ public class FeedingFrenzy {
     private Random rand = new Random();
     private List<Fish> npcFish = new ArrayList<>();
     private Image bg = new Image("seabedBg.jpg");
+    private GraphicsGroup hud;
     
     public FeedingFrenzy(){
         bg.setScale(2);
         canvas = new CanvasWindow("FeedingFrenzy!", CANVAS_WIDTH, CANVAS_HEIGHT);
+
+        canvas.add(bg);
+
+        hud = new GraphicsGroup();
+        canvas.add(hud);
+
         npcFishTypes = List.of(
             new FishType("bluefish.png", 0.2),
             new FishType("tuna.png", 0.4),
             new FishType("middlefish.png", 0.2),
             new FishType("shark.png", 0.6)
         );
-        for(int i =0; i <20; i++){
+        for(int i = 0; i < 20; i++) {
             addRandomFish();
         }
-        canvas.add(bg);
-        canvas.onMouseMove(event ->{
+
+        canvas.onMouseMove(event -> {
             player.setCenter(event.getPosition().getX(), event.getPosition().getY());
         });
         showFish();
         showRandomFish();
-        checkSamllerAndShowGraph();
         animate();
-        
     }
 
     private void addRandomFish(){
@@ -65,6 +74,8 @@ public class FeedingFrenzy {
                 ifHit(npc);
             }
             handleFishInteraction();
+            checkSmallerAndShowGraph();
+            player.animateGrow();
         });
     }
 
@@ -76,7 +87,7 @@ public class FeedingFrenzy {
 
         if (npcFish.getCenterY() < 0 || npcFish.getCenterY() > CANVAS_HEIGHT){
             npcFish.reset_dy_ForVerticalHit();
-        } else if(npcFish.getCenterX() < -10){
+        } else if(npcFish.getGraphics().getBoundsInParent().getMaxX() < 0){
             npcFish.reset_X_ForHorizontalHit();
             npcFish.reset_dx_ForHorizontalHit();
             npcFish.reset_dy_ForHorizontalHit();
@@ -92,14 +103,13 @@ public class FeedingFrenzy {
         canvas.add(winImg);
     }
 
-    private void handleFishInteraction(){
+    private void handleFishInteraction() {
         for (int i = 0; i < npcFish.size(); i++) {
-        Fish npc = npcFish.get(i);
-        player.interactWith(npc);
-        
+            Fish npc = npcFish.get(i);
+            player.interactWith(npc);
         }
         
-        if (player.getScale() == 0){
+        if (player.getScale() == 0) {
             loseGameOver();
         }
 
@@ -107,17 +117,14 @@ public class FeedingFrenzy {
             Fish f = npcFish.get(i);
             if (f.getScale()==0){
                 canvas.remove(f.getGraphics());
-            
                 npcFish.remove(i);
             }
             if (npcFish.size()==0){
-            win();
+                win();
             }
         }
 
     }
-
-
 
     public void loseGameOver(){
         canvas.removeAll();
@@ -127,32 +134,34 @@ public class FeedingFrenzy {
         canvas.add(bg);
         canvas.add(loseImg);
     }
-// here, the tuna and shark do not show up; also the set to the position
-    private void checkSamllerAndShowGraph(){
+   
+    private void checkSmallerAndShowGraph(){
+        hud.removeAll();
         if (player.getScale() > 0.2){
-            Image blueFishShow = new Image("bluefish.png");    
+            Image blueFishShow = new Image("bluefish.png"); 
+            // Paul says instead of this:
             blueFishShow.setScale(0.2);
+            // ...maybe try this:
+            // blueFishShow.setMaxHeight(fishIndicatorHeight);
             blueFishShow.setCenter(0,0);
             Image middleFishShow = new Image ("middlefish.png");
             middleFishShow.setScale(0.2);
             middleFishShow.setCenter(30,0);
-            canvas.add(blueFishShow);
-            canvas.add(middleFishShow);
+            hud.add(blueFishShow);
+            hud.add(middleFishShow);
         }
         if (player.getScale() > 0.4){
             Image tunaShow = new Image("tuna.png");
             tunaShow.setScale(0.4);
             tunaShow.setCenter(70,100);
-            canvas.add(tunaShow);
-
+            hud.add(tunaShow);
         }
-        else if (player.getScale()>0.6){
+        if (player.getScale() > 0.6){
             Image sharkShow = new Image("shark.png");
             sharkShow.setScale(0.6);
             sharkShow.setCenter(150,100);
-            canvas.add(sharkShow);
+            hud.add(sharkShow);
         }
-        
     }
 
     public static void main(String[] args){

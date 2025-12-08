@@ -12,6 +12,7 @@ public class Fish {
     private double dy= rand.nextDouble(-50,50);
 
     private double scale;
+    private double targetScale;
     private double radiusX;
     private double radiusY;
 
@@ -37,6 +38,7 @@ public class Fish {
         hitBox = new HitBox(x, y, radiusX, radiusY);
         
         scale = fishSize;
+        targetScale = fishSize;
     }
 
     
@@ -122,7 +124,7 @@ public class Fish {
             this.grow(other.getScale());
             goDie(other);
 
-        }else if (this.scale < other.scale){
+        } else if (this.scale < other.scale){
             other.grow(this.getScale());
             goDie(this);
         }
@@ -137,14 +139,19 @@ public class Fish {
         return this.scale;
     }
 
-    public void grow(double amount){
-        this.scale += amount - 0.18;
-        shape.setScale(this.scale);
-        double base = 135;
-        this.radiusX = base * this.scale;
-        this.radiusY = base * this.scale * 0.3;
-        hitBox.changeScale(radiusX, radiusY);
+    public void grow(double amount) {
+        targetScale += amount - 0.18;
+    }
 
+    public void animateGrow() {
+        if (targetScale > scale) {
+            scale += 0.01;
+            shape.setScale(this.scale);
+            double base = 135;
+            this.radiusX = base * this.scale;
+            this.radiusY = base * this.scale * 0.3;
+            hitBox.changeScale(radiusX, radiusY);
+        }
     }
 
 }
