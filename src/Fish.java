@@ -1,7 +1,4 @@
-import java.awt.Color;
 import java.util.Random;
-
-import edu.macalester.graphics.Ellipse;
 import edu.macalester.graphics.GraphicsObject;
 import edu.macalester.graphics.Image;
 import edu.macalester.graphics.Point;
@@ -18,7 +15,8 @@ public class Fish {
     private double radiusX;
     private double radiusY;
 
-    private Ellipse hitBox;
+    private HitBox hitBox;
+    
 
     public Fish(
         double centerX,
@@ -36,12 +34,13 @@ public class Fish {
         radiusX = base * fishSize;
         radiusY = base * fishSize * 0.3;
 
-        hitBox = new Ellipse(x-radiusX, y-radiusY, radiusX * 2, radiusY * 2);
-        hitBox.setStrokeColor(Color.RED);
-        hitBox.setFilled(false);
-
+        hitBox = new HitBox(x, y, radiusX, radiusY);
+        
         scale = fishSize;
     }
+
+    
+    
 
     public double getCenterX(){
         return x;
@@ -90,7 +89,7 @@ public class Fish {
         return shape;
     }
     
-    public Ellipse getHitbox(){
+    public HitBox getHitbox(){
         return hitBox;
     }
 
@@ -141,6 +140,11 @@ public class Fish {
     public void grow(double amount){
         this.scale += amount - 0.18;
         shape.setScale(this.scale);
+        double base = 135;
+        this.radiusX = base * this.scale;
+        this.radiusY = base * this.scale * 0.3;
+        hitBox.changeScale(radiusX, radiusY);
+
     }
 
 }

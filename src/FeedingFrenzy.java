@@ -44,13 +44,13 @@ public class FeedingFrenzy {
 
     private void showFish() {
         canvas.add(player.getGraphics());
-        canvas.add(player.getHitbox());
+        canvas.add(player.getHitbox().getHitBoxShape());
     }
 
     private void showRandomFish(){
         for (Fish npc : npcFish) {
             canvas.add(npc.getGraphics());
-            canvas.add(npc.getHitbox());
+            canvas.add(npc.getHitbox().getHitBoxShape());
         }
     }
 
@@ -80,32 +80,47 @@ public class FeedingFrenzy {
         }
     }
 
+    public void win(){
+        canvas.removeAll();
+        Image winImg = new Image("win fish.png");
+        winImg.setScale(0.8);
+        winImg.setCenter(CANVAS_WIDTH/2, CANVAS_HEIGHT/2);
+        canvas.add(bg);
+        canvas.add(winImg);
+    }
+
     private void handleFishInteraction(){
         for (int i = 0; i < npcFish.size(); i++) {
         Fish npc = npcFish.get(i);
         player.interactWith(npc);
+        
         }
         
         if (player.getScale() == 0){
-            gameOver();
+            loseGameOver();
         }
 
         for (int i = npcFish.size()-1; i>=0; i--){
-        Fish f = npcFish.get(i);
-        if (f.getScale()==0){
-            canvas.remove(f.getGraphics());
-            npcFish.remove(i);
+            Fish f = npcFish.get(i);
+            if (f.getScale()==0){
+                canvas.remove(f.getGraphics());
+            
+                npcFish.remove(i);
+            }
+            if (npcFish.size()==0){
+            win();
             }
         }
+
     }
 
-    public void gameOver(){
+    public void loseGameOver(){
         canvas.removeAll();
-        Image gameOverImg = new Image("gameover.jpg");
-        gameOverImg.setScale(0.5);
-        gameOverImg.setCenter(CANVAS_WIDTH/2, CANVAS_HEIGHT/2);
+        Image loseImg = new Image("lose fish.png");
+        loseImg.setScale(0.3);
+        loseImg.setCenter(CANVAS_WIDTH/2, CANVAS_HEIGHT/2);
         canvas.add(bg);
-        canvas.add(gameOverImg);
+        canvas.add(loseImg);
     }
 
     public static void main(String[] args){
