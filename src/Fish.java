@@ -8,7 +8,7 @@ public class Fish {
     private double x;
     private double y;
     private Random rand = new Random();
-    private double dx=rand.nextDouble(-50,-40);;
+    private double dx=rand.nextDouble(-120,-40);;
     private double dy= rand.nextDouble(-50,50);
 
     private double scale;

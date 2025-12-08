@@ -17,7 +17,7 @@ public class HitBox {
         this.radiusY = radiusY;
         
         hitBox = new Ellipse(x-radiusX, y-radiusY, radiusX*2, radiusY*2);
-        hitBox.setStrokeColor(Color.RED);
+        hitBox.setStroked(false);
         hitBox.setFilled(false);
     }
 
