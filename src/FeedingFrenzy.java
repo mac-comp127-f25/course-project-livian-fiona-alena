@@ -3,7 +3,9 @@ import java.util.List;
 import java.util.Random;
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.Image;
-
+// 1. begining page, "start" button
+// 2. "restart" page
+// 3. a bar that is showing the fishes that we are able to eat right now.
 public class FeedingFrenzy {
     public static final int CANVAS_WIDTH = 878;
     public static final int CANVAS_HEIGHT = 912;
@@ -32,6 +34,7 @@ public class FeedingFrenzy {
         });
         showFish();
         showRandomFish();
+        checkSamllerAndShowGraph();
         animate();
         
     }
@@ -114,6 +117,8 @@ public class FeedingFrenzy {
 
     }
 
+
+
     public void loseGameOver(){
         canvas.removeAll();
         Image loseImg = new Image("lose fish.png");
@@ -121,6 +126,33 @@ public class FeedingFrenzy {
         loseImg.setCenter(CANVAS_WIDTH/2, CANVAS_HEIGHT/2);
         canvas.add(bg);
         canvas.add(loseImg);
+    }
+// here, the tuna and shark do not show up; also the set to the position
+    private void checkSamllerAndShowGraph(){
+        if (player.getScale() > 0.2){
+            Image blueFishShow = new Image("bluefish.png");    
+            blueFishShow.setScale(0.2);
+            blueFishShow.setCenter(0,0);
+            Image middleFishShow = new Image ("middlefish.png");
+            middleFishShow.setScale(0.2);
+            middleFishShow.setCenter(30,0);
+            canvas.add(blueFishShow);
+            canvas.add(middleFishShow);
+        }
+        if (player.getScale() > 0.4){
+            Image tunaShow = new Image("tuna.png");
+            tunaShow.setScale(0.4);
+            tunaShow.setCenter(70,100);
+            canvas.add(tunaShow);
+
+        }
+        else if (player.getScale()>0.6){
+            Image sharkShow = new Image("shark.png");
+            sharkShow.setScale(0.6);
+            sharkShow.setCenter(150,100);
+            canvas.add(sharkShow);
+        }
+        
     }
 
     public static void main(String[] args){

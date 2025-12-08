@@ -1,6 +1,4 @@
 
-import java.awt.Color;
-
 import edu.macalester.graphics.Ellipse;
 
 public class HitBox {
