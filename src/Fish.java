@@ -32,11 +32,11 @@ public class Fish {
         this.y = centerY;
         shape.setScale(fishSize);
 
-        double base =135;
+        double base = 135;
         radiusX = base * fishSize;
         radiusY = base * fishSize * 0.3;
 
-        hitBox = new Ellipse(x-radiusX, y-radiusY, radiusX*2, radiusY*2);
+        hitBox = new Ellipse(x-radiusX, y-radiusY, radiusX * 2, radiusY * 2);
         hitBox.setStrokeColor(Color.RED);
         hitBox.setFilled(false);
 
@@ -77,8 +77,8 @@ public class Fish {
     public void setCenter(double newX, double newY ){
         this.x = newX;
         this.y = newY;
-        shape.setCenter(newX,newY );
-        hitBox.setCenter(newX,newY);
+        shape.setCenter(newX, newY);
+        hitBox.setCenter(newX, newY);
 
     }
 
@@ -104,7 +104,7 @@ public class Fish {
 
         double normalizeX = dx/rx;
         double normalizeY = dy/ry;
-        double overlapValue = normalizeX*normalizeX+normalizeY*normalizeY;
+        double overlapValue = normalizeX * normalizeX + normalizeY * normalizeY;
         if (overlapValue <= 1.0){
             return true;
         } else{
@@ -113,16 +113,18 @@ public class Fish {
     }
 
     public void interactWith(Fish other){
-        if (this.scale == 0 || other.scale ==0){
+        if (this.scale == 0 || other.scale == 0){
             return;
         }
         if(!this.overlapAmount(other)){
             return;
         }
         if (this.scale > other.scale){
+            this.grow(other.getScale());
             goDie(other);
 
         }else if (this.scale < other.scale){
+            other.grow(this.getScale());
             goDie(this);
         }
     }
@@ -130,12 +132,15 @@ public class Fish {
     public void goDie(Fish f){
         f.scale = 0;
         f.shape.setScale(0);
-
     }
 
     public double getScale(){
         return this.scale;
     }
 
+    public void grow(double amount){
+        this.scale += amount - 0.18;
+        shape.setScale(this.scale);
+    }
 
 }

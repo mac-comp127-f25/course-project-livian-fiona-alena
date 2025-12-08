@@ -34,7 +34,6 @@ public class FeedingFrenzy {
         showRandomFish();
         animate();
         
-        
     }
 
     private void addRandomFish(){
@@ -72,9 +71,9 @@ public class FeedingFrenzy {
 
         // Consider renaming RandomFish -> NPCFish
 
-        if (npcFish.getCenterY()<0 || npcFish.getCenterY()>CANVAS_HEIGHT){
+        if (npcFish.getCenterY() < 0 || npcFish.getCenterY() > CANVAS_HEIGHT){
             npcFish.reset_dy_ForVerticalHit();
-        } else if(npcFish.getCenterX()<-10){
+        } else if(npcFish.getCenterX() < -10){
             npcFish.reset_X_ForHorizontalHit();
             npcFish.reset_dx_ForHorizontalHit();
             npcFish.reset_dy_ForHorizontalHit();
@@ -86,7 +85,10 @@ public class FeedingFrenzy {
         Fish npc = npcFish.get(i);
         player.interactWith(npc);
         }
-    
+        
+        if (player.getScale() == 0){
+            gameOver();
+        }
 
         for (int i = npcFish.size()-1; i>=0; i--){
         Fish f = npcFish.get(i);
@@ -97,6 +99,14 @@ public class FeedingFrenzy {
         }
     }
 
+    public void gameOver(){
+        canvas.removeAll();
+        Image gameOverImg = new Image("gameover.jpg");
+        gameOverImg.setScale(0.5);
+        gameOverImg.setCenter(CANVAS_WIDTH/2, CANVAS_HEIGHT/2);
+        canvas.add(bg);
+        canvas.add(gameOverImg);
+    }
 
     public static void main(String[] args){
         new FeedingFrenzy();
