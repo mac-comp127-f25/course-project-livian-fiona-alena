@@ -16,7 +16,7 @@ public class FeedingFrenzy {
     public static final int CANVAS_WIDTH = 878;
     public static final int CANVAS_HEIGHT = 912;
     private Rectangle topbar;
-    private static final double topbarHeight = 80;
+    private static final int topbarHeight = 80;
     private final CanvasWindow canvas;
     private Fish player = new Fish(300, 380, "ClownFish.png", 0.25);
     private List<FishType> npcFishTypes;
@@ -59,7 +59,7 @@ public class FeedingFrenzy {
 
     private void addRandomFish(){
         FishType fishType = npcFishTypes.get(rand.nextInt(npcFishTypes.size()));
-        Fish newFish = new Fish(CANVAS_WIDTH, rand.nextInt(0, 100), fishType.getImagePath(), fishType.getScale());
+        Fish newFish = new Fish(CANVAS_WIDTH, rand.nextInt(topbarHeight, CANVAS_HEIGHT), fishType.getImagePath(), fishType.getScale());
         npcFish.add(newFish);
     }
 
