@@ -31,9 +31,9 @@ public class Fish {
         this.y = centerY;
         shape.setScale(fishSize);
 
-        double base = 135;
-        radiusX = base * fishSize;
-        radiusY = base * fishSize * 0.3;
+        double base = 80;
+        radiusX = base * fishSize*1.75;
+        radiusY = base * fishSize * 0.75;
 
         hitBox = new HitBox(x, y, radiusX, radiusY);
         
@@ -53,7 +53,7 @@ public class Fish {
     }
 
     public double reset_X_ForHorizontalHit(){
-        return x = FeedingFrenzy.CANVAS_WIDTH;
+        return x = FeedingFrenzy.CANVAS_WIDTH+100;
     }
 
     public double reset_dx_ForHorizontalHit(){

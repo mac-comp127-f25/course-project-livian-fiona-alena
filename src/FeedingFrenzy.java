@@ -24,6 +24,10 @@ public class FeedingFrenzy {
     private List<Fish> npcFish = new ArrayList<>();
     private Image bg = new Image("seabedBg.jpg");
     private GraphicsGroup hud;
+
+    private boolean gameStarted = false;
+
+
     
     public FeedingFrenzy(){
         bg.setScale(2);
@@ -58,7 +62,7 @@ public class FeedingFrenzy {
 
     private void addRandomFish(){
         FishType fishType = npcFishTypes.get(rand.nextInt(npcFishTypes.size()));
-        Fish newFish = new Fish(CANVAS_WIDTH, rand.nextInt(80, CANVAS_HEIGHT), fishType.getImagePath(), fishType.getScale());
+        Fish newFish = new Fish(CANVAS_WIDTH, rand.nextInt(100, CANVAS_HEIGHT), fishType.getImagePath(), fishType.getScale());
         npcFish.add(newFish);
     }
 
@@ -164,7 +168,7 @@ public class FeedingFrenzy {
             tunaShow.setCenter(350,50);
             hud.add(tunaShow);
         }
-        if (player.getScale() > 0.6){
+        if (player.getScale() > 0.7){
             Image sharkShow = new Image("shark.png");
             sharkShow.setMaxHeight(fishIndicatorHeight);
             sharkShow.setCenter(500,50);
