@@ -24,10 +24,6 @@ public class FeedingFrenzy {
     private List<Fish> npcFish = new ArrayList<>();
     private Image bg = new Image("seabedBg.jpg");
     private GraphicsGroup hud;
-
-    private boolean gameStarted = false;
-
-
     
     public FeedingFrenzy(){
         bg.setScale(2);
@@ -55,6 +51,7 @@ public class FeedingFrenzy {
         canvas.onMouseMove(event -> {
             player.setCenter(event.getPosition().getX(), event.getPosition().getY());
         });
+
         showFish();
         showRandomFish();
         animate();
@@ -92,10 +89,6 @@ public class FeedingFrenzy {
     }
 
     public void ifHit(Fish npcFish){
-        // Consider adding this to RandomFish as getRightX():
-        // npcFish.getRandomFishGraphics().getBoundsInParent().getMaxX()   // <- to compute the right edge of a graphics object
-
-        // Consider renaming RandomFish -> NPCFish
 
         if (npcFish.getCenterY() < 100 || npcFish.getCenterY() > CANVAS_HEIGHT){
             npcFish.reset_dy_ForVerticalHit();
@@ -152,7 +145,6 @@ public class FeedingFrenzy {
         double fishIndicatorHeight = 80;
         if (player.getScale() > 0.2){
             Image blueFishShow = new Image("bluefish.png"); 
-            // Paul says instead of this:
             blueFishShow.setMaxHeight(fishIndicatorHeight);
             blueFishShow.setCenter(50,50);
             
