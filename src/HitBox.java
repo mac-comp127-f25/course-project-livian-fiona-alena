@@ -2,6 +2,7 @@
 import edu.macalester.graphics.Ellipse;
 
 public class HitBox {
+    private static final boolean DEBUG_HIT_BOXES = true;
     private double x;
     private double y;
     private double radiusX;
@@ -15,7 +16,7 @@ public class HitBox {
         this.radiusY = radiusY;
         
         hitBox = new Ellipse(x-radiusX, y-radiusY, radiusX*2, radiusY*2);
-        hitBox.setStroked(true);
+        hitBox.setStroked(DEBUG_HIT_BOXES);
         hitBox.setFilled(false);
     }
 

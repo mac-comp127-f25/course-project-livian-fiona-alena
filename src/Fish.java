@@ -153,4 +153,8 @@ public class Fish {
         }
     }
 
+    public boolean isGoingUp() {
+       return dy < 0;
+    }
+
 }
