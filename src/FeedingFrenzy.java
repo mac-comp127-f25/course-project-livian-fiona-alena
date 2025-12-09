@@ -15,7 +15,6 @@ import edu.macalester.graphics.Rectangle;
 public class FeedingFrenzy {
     public static final int CANVAS_WIDTH = 878;
     public static final int CANVAS_HEIGHT = 912;
-    private Rectangle topbar;
     private static final int topbarHeight = 80;
     private final CanvasWindow canvas;
     private Fish player = new Fish(300, 380, "ClownFish.png", 0.25);
@@ -23,18 +22,18 @@ public class FeedingFrenzy {
     private Random rand = new Random();
     private List<Fish> npcFish = new ArrayList<>();
     private Image bg = new Image("seabedBg.jpg");
+    private Image barBg = new Image("barbackground.png");
     private GraphicsGroup hud;
+    private double minYBoundForAllFishes = 100.0;
+    private double maxXBoundForAllFishes = CANVAS_WIDTH + 150;
+    
     
     public FeedingFrenzy(){
         bg.setScale(2);
         canvas = new CanvasWindow("FeedingFrenzy!", CANVAS_WIDTH, CANVAS_HEIGHT);
 
         canvas.add(bg);
-
-        topbar = new Rectangle(0,0,CANVAS_WIDTH,topbarHeight);
-        topbar.setFillColor(Color.GREEN);
-        canvas.add(topbar);
-
+        canvas.add(barBg);
         hud = new GraphicsGroup();
         canvas.add(hud);
 
@@ -49,7 +48,13 @@ public class FeedingFrenzy {
         }
 
         canvas.onMouseMove(event -> {
-            player.setCenter(event.getPosition().getX(), event.getPosition().getY());
+            player.setCenter(
+                event.getPosition().getX(),
+                Math.max(
+                    event.getPosition().getY(),
+                    minYBoundForAllFishes
+                )
+            );
         });
 
         showFish();
@@ -89,11 +94,13 @@ public class FeedingFrenzy {
     }
 
     public void ifHit(Fish npcFish){
-
-        if (npcFish.getCenterY() < 100 && npcFish.isGoingUp() || npcFish.getCenterY() > CANVAS_HEIGHT && !npcFish.isGoingUp()){
+        if (
+            npcFish.getCenterY() < 100 && npcFish.isGoingUp()
+            || npcFish.getCenterY() > CANVAS_HEIGHT && !npcFish.isGoingUp()
+        ) {
             npcFish.reset_dy_ForVerticalHit();
         } else if(npcFish.getGraphics().getBoundsInParent().getMaxX() < 0){
-            npcFish.reset_X_ForHorizontalHit();
+            npcFish.reset_X_ForHorizontalHit(maxXBoundForAllFishes);
             npcFish.reset_dx_ForHorizontalHit();
             npcFish.reset_dy_ForHorizontalHit();
         }

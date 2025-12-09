@@ -52,8 +52,8 @@ public class Fish {
         return y;
     }
 
-    public double reset_X_ForHorizontalHit(){
-        return x = FeedingFrenzy.CANVAS_WIDTH+150;
+    public double reset_X_ForHorizontalHit(double reappearX){
+        return x = reappearX;
     }
 
     public double reset_dx_ForHorizontalHit(){
