@@ -53,7 +53,7 @@ public class Fish {
     }
 
     public double reset_X_ForHorizontalHit(){
-        return x = FeedingFrenzy.CANVAS_WIDTH+100;
+        return x = FeedingFrenzy.CANVAS_WIDTH+150;
     }
 
     public double reset_dx_ForHorizontalHit(){
@@ -152,6 +152,10 @@ public class Fish {
             this.radiusY = base * this.scale * 0.3;
             hitBox.changeScale(radiusX, radiusY);
         }
+    }
+
+    public boolean isGoingUp() {
+       return dy < 0;
     }
 
 }

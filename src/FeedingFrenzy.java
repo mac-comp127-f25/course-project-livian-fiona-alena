@@ -62,7 +62,7 @@ public class FeedingFrenzy {
 
     private void addRandomFish(){
         FishType fishType = npcFishTypes.get(rand.nextInt(npcFishTypes.size()));
-        Fish newFish = new Fish(CANVAS_WIDTH, rand.nextInt(100, CANVAS_HEIGHT), fishType.getImagePath(), fishType.getScale());
+        Fish newFish = new Fish(CANVAS_WIDTH, rand.nextInt(0, 100), fishType.getImagePath(), fishType.getScale());
         npcFish.add(newFish);
     }
 
@@ -97,7 +97,7 @@ public class FeedingFrenzy {
 
         // Consider renaming RandomFish -> NPCFish
 
-        if (npcFish.getCenterY() < 100 || npcFish.getCenterY() > CANVAS_HEIGHT){
+        if (npcFish.getCenterY() < 100 && npcFish.isGoingUp() || npcFish.getCenterY() > CANVAS_HEIGHT && !npcFish.isGoingUp()){
             npcFish.reset_dy_ForVerticalHit();
         } else if(npcFish.getGraphics().getBoundsInParent().getMaxX() < 0){
             npcFish.reset_X_ForHorizontalHit();
