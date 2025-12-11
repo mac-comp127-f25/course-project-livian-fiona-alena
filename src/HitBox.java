@@ -7,7 +7,7 @@ import edu.macalester.graphics.Ellipse;
  * The hitbox is not visible in the final game.
  */
 public class HitBox {
-    private static final boolean DEBUG_HIT_BOXES = true;
+    private static final boolean DEBUG_HIT_BOXES = false;
     private double x;
     private double y;
     private double radiusX;

@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -26,7 +27,7 @@ public class FeedingFrenzy {
     public static final int CANVAS_HEIGHT = 912;
     private static final int topbarHeight = 80;
     private final CanvasWindow canvas;
-    private Fish player = new Fish(300, 380, "ClownFish.png", 0.25);
+    private Fish player;
     private List<FishType> npcFishTypes;
     private Random rand = new Random();
     private List<Fish> npcFish = new ArrayList<>();
@@ -35,6 +36,7 @@ public class FeedingFrenzy {
     private GraphicsGroup hud;
     private double minYBoundForAllFishes = 100.0;
     private double maxXBoundForAllFishes = CANVAS_WIDTH + 150;
+    private boolean alive;
     
     /**
      * Constructs a new FeedingFrenzy game, setting up the canvas,
@@ -49,6 +51,10 @@ public class FeedingFrenzy {
         canvas.add(barBg);
         hud = new GraphicsGroup();
         canvas.add(hud);
+        GraphicsText starttext = new GraphicsText("Click to play");
+        starttext.setFontSize(90);
+        starttext.setPosition(CANVAS_WIDTH / 2-250, CANVAS_HEIGHT / 2);
+        canvas.add(starttext);
 
         npcFishTypes = List.of(
             new FishType("bluefish.png", 0.2),
@@ -56,23 +62,43 @@ public class FeedingFrenzy {
             new FishType("middlefish.png", 0.2),
             new FishType("shark.png", 0.7)
         );
+
+        canvas.onMouseMove(event -> {
+            if(alive){
+                player.setCenter(
+                    event.getPosition().getX(),
+                    Math.max(
+                        event.getPosition().getY(),
+                        minYBoundForAllFishes
+                    )
+                );
+            }
+        });
+        
+        canvas.onClick(event -> {
+            if(!alive){
+                startGame();
+            }
+        });
+
+        animate();
+    }
+
+    private void startGame(){
+        alive = true;
+        canvas.removeAll();
+        npcFish.clear();
+        canvas.add(bg);
+        canvas.add(barBg);
+        canvas.add(hud);
+
+        player = new Fish(300, 380, "ClownFish.png", 0.25);
+        
         for(int i = 0; i < 20; i++) {
             addRandomFish();
         }
-
-        canvas.onMouseMove(event -> {
-            player.setCenter(
-                event.getPosition().getX(),
-                Math.max(
-                    event.getPosition().getY(),
-                    minYBoundForAllFishes
-                )
-            );
-        });
-
         showFish();
         showRandomFish();
-        animate();
     }
 
     /** creates a NPC fish of a random type
@@ -109,15 +135,17 @@ public class FeedingFrenzy {
      * and handles game state changes.
     */
     private void animate(){
-        canvas.animate(dt->{
+        canvas.animate(dt -> {
             dt = Math.min(dt, 0.1);
             for(Fish npc : npcFish){
                 npc.updatePosition(dt); 
                 ifHit(npc);
             }
-            handleFishInteraction();
-            checkSmallerAndShowGraph();
-            player.animateGrow();
+            if(alive){
+                handleFishInteraction();
+                checkSmallerAndShowGraph();
+                player.animateGrow();
+            }
         });
     }
 
@@ -189,11 +217,12 @@ public class FeedingFrenzy {
      * after player fish's scale reaches zero.
     */
     public void loseGameOver(){
-        canvas.removeAll();
+        alive = false;
+        canvas.remove(player.getGraphics());
+
         Image loseImg = new Image("losefish.png");
         loseImg.setScale(0.3);
         loseImg.setCenter(CANVAS_WIDTH/2, CANVAS_HEIGHT/2-50);
-        canvas.add(bg);
         canvas.add(loseImg);
 
         Rectangle button = new Rectangle(CANVAS_WIDTH/2-100, CANVAS_HEIGHT/2+300, 200,50);
@@ -203,35 +232,6 @@ public class FeedingFrenzy {
         label.setPosition(CANVAS_WIDTH / 2-50, CANVAS_HEIGHT / 2 +333);
         canvas.add(button);
         canvas.add(label);
-
-        canvas.onClick(event -> {
-            double x = event.getPosition().getX();
-            double y = event.getPosition().getY();
-            double bx = button.getX();
-            double by = button.getY();
-            double bw = button.getWidth();
-            double bh = button.getHeight();
-
-            if (x >= bx && x <= bx + bw && y >= by && y <= by + bh) {
-                restartGame();
-            }
-        });
-    }
-
-    private void restartGame(){
-        canvas.removeAll();
-        npcFish.clear();
-        canvas.add(bg);
-        canvas.add(barBg);
-        canvas.add(hud);
-
-        player = new Fish(300, 380, "ClownFish.png", 0.25);
-        
-        for(int i = 0; i < 20; i++) {
-            addRandomFish();
-        }
-        showFish();
-        showRandomFish();
     }
 
     /** 
