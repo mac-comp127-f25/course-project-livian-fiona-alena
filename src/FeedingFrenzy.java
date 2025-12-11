@@ -2,16 +2,19 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.Image;
-import edu.macalester.graphics.Rectangle;
+import edu.macalester.graphics.GraphicsText;
 // 1. begining page, "start" button
 // 2. "restart" page
 // 3. a bar that is showing the fishes that we are able to eat right now.
 // the reappear thing from the right
 // rectangle holding the fish displayed
 // hitbox size of middle fish and player fish
+import edu.macalester.graphics.Rectangle;
 
 /**
  * The main class that runs the Feeding Frenzy game.
@@ -189,9 +192,46 @@ public class FeedingFrenzy {
         canvas.removeAll();
         Image loseImg = new Image("losefish.png");
         loseImg.setScale(0.3);
-        loseImg.setCenter(CANVAS_WIDTH/2, CANVAS_HEIGHT/2);
+        loseImg.setCenter(CANVAS_WIDTH/2, CANVAS_HEIGHT/2-50);
         canvas.add(bg);
         canvas.add(loseImg);
+
+        Rectangle button = new Rectangle(CANVAS_WIDTH/2-100, CANVAS_HEIGHT/2+300, 200,50);
+        button.setFillColor(Color.GRAY);
+        GraphicsText label = new GraphicsText("Play Again");
+        label.setFontSize(22);
+        label.setPosition(CANVAS_WIDTH / 2-50, CANVAS_HEIGHT / 2 +333);
+        canvas.add(button);
+        canvas.add(label);
+
+        canvas.onClick(event -> {
+            double x = event.getPosition().getX();
+            double y = event.getPosition().getY();
+            double bx = button.getX();
+            double by = button.getY();
+            double bw = button.getWidth();
+            double bh = button.getHeight();
+
+            if (x >= bx && x <= bx + bw && y >= by && y <= by + bh) {
+                restartGame();
+            }
+        });
+    }
+
+    private void restartGame(){
+        canvas.removeAll();
+        npcFish.clear();
+        canvas.add(bg);
+        canvas.add(barBg);
+        canvas.add(hud);
+
+        player = new Fish(300, 380, "ClownFish.png", 0.25);
+        
+        for(int i = 0; i < 20; i++) {
+            addRandomFish();
+        }
+        showFish();
+        showRandomFish();
     }
 
     /** 
@@ -204,24 +244,24 @@ public class FeedingFrenzy {
         if (player.getScale() > 0.2){
             Image blueFishShow = new Image("bluefish.png"); 
             blueFishShow.setMaxHeight(fishIndicatorHeight);
-            blueFishShow.setCenter(50,50);
+            blueFishShow.setCenter(400,50);
             
             Image middleFishShow = new Image ("middlefish.png");
             middleFishShow.setMaxHeight(fishIndicatorHeight);
-            middleFishShow.setCenter(200,50);
+            middleFishShow.setCenter(520,50);
             hud.add(blueFishShow);
             hud.add(middleFishShow);
         }
         if (player.getScale() > 0.4){
             Image tunaShow = new Image("tuna.png");
             tunaShow.setMaxHeight(fishIndicatorHeight);
-            tunaShow.setCenter(350,50);
+            tunaShow.setCenter(640,50);
             hud.add(tunaShow);
         }
         if (player.getScale() > 0.7){
             Image sharkShow = new Image("shark.png");
             sharkShow.setMaxHeight(fishIndicatorHeight);
-            sharkShow.setCenter(500,50);
+            sharkShow.setCenter(760,50);
             hud.add(sharkShow);
         }
     }

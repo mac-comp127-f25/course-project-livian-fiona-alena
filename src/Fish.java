@@ -44,9 +44,9 @@ public class Fish {
         this.y = centerY;
         shape.setScale(fishSize);
 
-        double base = 80;
-        radiusX = base * fishSize*1.75;
-        radiusY = base * fishSize * 0.75;
+        double base = 140;
+        radiusX = base * fishSize;
+        radiusY = base * fishSize * 0.55;
 
         hitBox = new HitBox(x, y, radiusX, radiusY);
         
