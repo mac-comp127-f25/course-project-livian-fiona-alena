@@ -113,15 +113,22 @@ public class FeedingFrenzy {
 
     ///ask Paul look at this, I want to make sure the fish can grow big enough to eat the larger fishes
     private void addRandomFish(){
-        for(int i = 0; i < minSmallFishNum; i ++){
-            FishType fishType = npcFishTypes.get(rand.nextInt(2)); // this means to get the first two kinds of fish, which are the blue fish and the middle fish, our player fish can eat at the beginning
-            Fish newFish = new Fish(CANVAS_WIDTH, rand.nextInt(topbarHeight, CANVAS_HEIGHT), fishType.getImagePath(), fishType.getScale());
+        for (int i = 0; i < npcFishNum; i++) {
+            int fishTypeMaxIndex;
+            if (i < minSmallFishNum) {
+                // this means to get the first two kinds of fish, 
+                // which are the small fish, 
+                // our player fish can eat at the beginning
+                fishTypeMaxIndex = 2; 
+            } else {
+                fishTypeMaxIndex = npcFishTypes.size();
+            }
+            FishType fishType = npcFishTypes.get(rand.nextInt(fishTypeMaxIndex));
+            Fish newFish = new Fish (CANVAS_WIDTH,
+                                    rand.nextInt(topbarHeight, CANVAS_HEIGHT), 
+                                    fishType.getImagePath(), 
+                                    fishType.getScale());
             npcFish.add(newFish);
-        }
-        for (int i = 0; i < (npcFishNum - minSmallFishNum); i++){
-        FishType fishType = npcFishTypes.get(rand.nextInt(npcFishTypes.size()));
-        Fish newFish = new Fish(CANVAS_WIDTH, rand.nextInt(topbarHeight, CANVAS_HEIGHT), fishType.getImagePath(), fishType.getScale());
-        npcFish.add(newFish);
         }
     }
 
