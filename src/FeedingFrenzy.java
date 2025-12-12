@@ -1,21 +1,9 @@
-import java.awt.Color;
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.Image;
-import edu.macalester.graphics.GraphicsText;
-// 1. begining page, "start" button
-// 2. "restart" page
-// 3. a bar that is showing the fishes that we are able to eat right now.
-// the reappear thing from the right
-// rectangle holding the fish displayed
-// hitbox size of middle fish and player fish
-import edu.macalester.graphics.Rectangle;
 
 /**
  * The main class that runs the Feeding Frenzy game.
@@ -35,7 +23,7 @@ public class FeedingFrenzy {
     private Image barBg = new Image("barbackground.png");
     private Image clickToStartImg = new Image(0,450,"clickToStart.png");
     private Image clickToRestartImg = new Image(0,750,"clickToResatrt.png");
-    private int npcFishNum = 20;
+    private int npcFishNum = 30;
     private int minSmallFishNum = 8;
     private GraphicsGroup hud;
     private double minYBoundForAllFishes = 100.0;
@@ -50,14 +38,12 @@ public class FeedingFrenzy {
     public FeedingFrenzy(){
         bg.setScale(2);
         canvas = new CanvasWindow("FeedingFrenzy!", CANVAS_WIDTH, CANVAS_HEIGHT);
-
         canvas.add(bg);
+
         canvas.add(barBg);
         hud = new GraphicsGroup();
         canvas.add(hud);
-        // GraphicsText starttext = new GraphicsText("Click to play");
-        // starttext.setFontSize(90);
-        // starttext.setPosition(CANVAS_WIDTH / 2-250, CANVAS_HEIGHT / 2);
+
         canvas.add(clickToStartImg);
 
         npcFishTypes = List.of(
@@ -66,9 +52,9 @@ public class FeedingFrenzy {
             new FishType("tuna.png", 0.4),
             new FishType("shark.png", 0.7)
         );
-
+        
         canvas.onMouseMove(event -> {
-            if(gameRunning){
+            if (gameRunning) {
                 player.setCenter(
                     event.getPosition().getX(),
                     Math.max(
@@ -80,7 +66,7 @@ public class FeedingFrenzy {
         });
         
         canvas.onClick(event -> {
-            if(!gameRunning){
+            if (!gameRunning) {
                 startGame();
             }
         });
@@ -88,43 +74,41 @@ public class FeedingFrenzy {
         animate();
     }
 
-    private void startGame(){
+    /**
+     * Initialize a new starting state,
+     * by setting all the items on the canvas again.
+     */
+    private void startGame() {
         gameRunning = true;
         canvas.removeAll();
         npcFish.clear();
         canvas.add(bg);
         canvas.add(barBg);
         canvas.add(hud);
-
         player = new Fish(300, 380, "ClownFish.png", 0.25);
-        
-        // for(int i = 0; i < npcFishNum; i++) {
-        //     addRandomFish();
-        // }
         addRandomFish();
         showFish();
         showRandomFish();
     }
 
-    /** creates a NPC fish of a random type
-     * and adds it to the npcFish list
-     * places it off the right edge of the screen.
+    /** 
+     * Creates a NPC fish of a random type
+     * but the first 8 created would be the small fishes our player fish can eat at the begining,
+     * and the ohters would be creating a random fishtype out of the four types each time.
      */
-
-    ///ask Paul look at this, I want to make sure the fish can grow big enough to eat the larger fishes
-    private void addRandomFish(){
+    private void addRandomFish() {
         for (int i = 0; i < npcFishNum; i++) {
             int fishTypeMaxIndex;
             if (i < minSmallFishNum) {
-                // this means to get the first two kinds of fish, 
+                // this following number 2 means to get the first two kinds of fish, 
                 // which are the small fish, 
-                // our player fish can eat at the beginning
+                // our player fish can eat at the beginning.
                 fishTypeMaxIndex = 2; 
             } else {
                 fishTypeMaxIndex = npcFishTypes.size();
             }
             FishType fishType = npcFishTypes.get(rand.nextInt(fishTypeMaxIndex));
-            Fish newFish = new Fish (CANVAS_WIDTH,
+            Fish newFish = new Fish (maxXBoundForAllFishes,
                                     rand.nextInt(topbarHeight, CANVAS_HEIGHT), 
                                     fishType.getImagePath(), 
                                     fishType.getScale());
@@ -133,7 +117,7 @@ public class FeedingFrenzy {
     }
 
     /** 
-     * adds the player fish and its hitbox to the canvas.
+     * Adds the player fish and its hitbox to the canvas.
     */
     private void showFish() {
         canvas.add(player.getGraphics());
@@ -141,9 +125,9 @@ public class FeedingFrenzy {
     }
 
     /** 
-     * adds all NPC fishes and their hitboxes to the canvas.
+     * Adds all NPC fishes and their hitboxes to the canvas.
     */
-    private void showRandomFish(){
+    private void showRandomFish() {
         for (Fish npc : npcFish) {
             canvas.add(npc.getGraphics());
             canvas.add(npc.getHitbox().getHitBoxShape());
@@ -152,17 +136,18 @@ public class FeedingFrenzy {
 
     /** 
      * Starts the animation loop that updates the positions of all NPC fishes,
-     * checks for collisions with walls, handles interactions between fishes,
-     * and handles game state changes.
+     * checks for collisions with walls, 
+     * handles interactions between fishes,
+     * and tells the fishes player fish can eat at the moment.
     */
-    private void animate(){
+    private void animate() {
         canvas.animate(dt -> {
             dt = Math.min(dt, 0.1);
-            for(Fish npc : npcFish){
+            for(Fish npc : npcFish) {
                 npc.updatePosition(dt); 
                 ifHit(npc);
             }
-            if(gameRunning){
+            if(gameRunning) {
                 handleFishInteraction();
                 checkSmallerAndShowGraph();
                 player.animateGrow();
@@ -172,18 +157,17 @@ public class FeedingFrenzy {
 
     /** 
      * Handles NPC fish interactions with the vertical edges and left edge of the canvas.
-     * 
      * Checks if a NPC fish has hit the vertical bounds or the left edge,
-     * and vertical edges cause the fish to invert its vertical velocity,
-     * while the left edge causes the fish to reappear on the right.
+     * and a hit on both top and bottom vertical edges cause the fish to invert its vertical velocity,
+     * while the hit on left edge causes the fish to reappear on the right.
     */
-    public void ifHit(Fish npcFish){
+    public void ifHit(Fish npcFish) {
         if (
             npcFish.getCenterY() < 100 && npcFish.isGoingUp()
             || npcFish.getCenterY() > CANVAS_HEIGHT && !npcFish.isGoingUp()
         ) {
             npcFish.reset_dy_ForVerticalHit();
-        } else if(npcFish.getGraphics().getBoundsInParent().getMaxX() < 0){
+        } else if (npcFish.getGraphics().getBoundsInParent().getMaxX() < 0) {
             npcFish.reset_X_ForHorizontalHit(maxXBoundForAllFishes);
             npcFish.reset_dx_ForHorizontalHit();
             npcFish.reset_dy_ForHorizontalHit();
@@ -191,10 +175,10 @@ public class FeedingFrenzy {
     }
 
     /** 
-     * Remove all images and Displays the "win" screen 
-     * after player fish successfully eats all NPC fish.
+     * Remove all images and Displays the win picture screen after player fish successfully eats all NPC fish.
+     * click to restart.
     */
-    public void win(){
+    public void win() {
         canvas.removeAll();
         Image winImg = new Image("winfish.png");
         winImg.setScale(0.8);
@@ -207,10 +191,10 @@ public class FeedingFrenzy {
 
     /** 
      * Handles all collisions and eating interactions between the player fish and all NPC fishes.
-     * 
-     * When two fishes overlap, the larger fish eats the smaller fish.
-     * If the player fish's scale reaches zero, remove all and "lose" screen is shown.
-     * Also removes any NPC fish that have been eaten from the canvas and the npcFish list.
+     * When the hit box of the two fishes overlap, the larger fish eats the smaller fish,
+     * then the eaten fish is removed form the canvas and the npcFish list.
+     * If the scale of player fish reaches zero, process the lose gmae event.
+     * If all the nps fishes are eaten, process win event.
     */
     private void handleFishInteraction() {
         for (int i = 0; i < npcFish.size(); i++) {
@@ -222,13 +206,13 @@ public class FeedingFrenzy {
             loseGameOver();
         }
 
-        for (int i = npcFish.size()-1; i>=0; i--){
+        for (int i = npcFish.size()-1; i>=0; i--) {
             Fish f = npcFish.get(i);
-            if (f.getScale()==0){
+            if (f.getScale()==0) {
                 canvas.remove(f.getGraphics());
                 npcFish.remove(i);
             }
-            if (npcFish.size()==0){
+            if (npcFish.size()==0) {
                 win();
             }
         }
@@ -236,35 +220,28 @@ public class FeedingFrenzy {
     }
 
     /** 
-     * Remove all images and Displays the "lose" screen 
-     * after player fish's scale reaches zero.
+     * keep all npc fishes left still moving,
+     * and displays the lose image,
+     * and click to restart
+     * 
     */
-    public void loseGameOver(){
+    public void loseGameOver() {
         gameRunning = false;
         canvas.remove(player.getGraphics());
-
         Image loseImg = new Image("losefish.png");
         loseImg.setScale(0.3);
         loseImg.setCenter(CANVAS_WIDTH/2, CANVAS_HEIGHT/2-50);
         canvas.add(loseImg);
-
-        // Rectangle button = new Rectangle(CANVAS_WIDTH/2-100, CANVAS_HEIGHT/2+300, 200,50);
-        // button.setFillColor(Color.GRAY);
-        // GraphicsText label = new GraphicsText("Play Again");
-        // label.setFontSize(22);
-        // label.setPosition(CANVAS_WIDTH / 2-50, CANVAS_HEIGHT / 2 +333);
-        // canvas.add(button);
         canvas.add(clickToRestartImg);
     }
 
     /** 
-     * Updates the HUD to show which NPC fish types the player fish can currently eat,
-     * based on its current scale.
+     * Updates the hud to show which NPC fish types the player fish can currently eat based on its current scale.
     */
-    private void checkSmallerAndShowGraph(){
+    private void checkSmallerAndShowGraph() {
         hud.removeAll();
         double fishIndicatorHeight = 80;
-        if (player.getScale() > 0.2){
+        if (player.getScale() > 0.2) {
             Image blueFishShow = new Image("bluefish.png"); 
             blueFishShow.setMaxHeight(fishIndicatorHeight);
             blueFishShow.setCenter(400,50);
@@ -275,13 +252,13 @@ public class FeedingFrenzy {
             hud.add(blueFishShow);
             hud.add(middleFishShow);
         }
-        if (player.getScale() > 0.4){
+        if (player.getScale() > 0.4) {
             Image tunaShow = new Image("tuna.png");
             tunaShow.setMaxHeight(fishIndicatorHeight);
             tunaShow.setCenter(640,50);
             hud.add(tunaShow);
         }
-        if (player.getScale() > 0.7){
+        if (player.getScale() > 0.7) {
             Image sharkShow = new Image("shark.png");
             sharkShow.setMaxHeight(fishIndicatorHeight);
             sharkShow.setCenter(760,50);
@@ -292,7 +269,7 @@ public class FeedingFrenzy {
     /** 
      * starts the FeedingFrenzy game.
     */
-    public static void main(String[] args){
+    public static void main(String[] args) {
         new FeedingFrenzy();
     }
 }

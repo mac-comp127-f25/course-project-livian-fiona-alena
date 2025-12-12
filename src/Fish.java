@@ -37,7 +37,7 @@ public class Fish {
         double centerY,
         String pathname,
         double fishSize
-    ){
+    ) {
         shape = new Image(pathname);
         shape.setScale(fishSize);
         this.x = centerX;
@@ -47,7 +47,6 @@ public class Fish {
         double base = 140;
         radiusX = base * fishSize;
         radiusY = base * fishSize * 0.55;
-
         hitBox = new HitBox(x, y, radiusX, radiusY);
         
         scale = fishSize;
@@ -57,7 +56,7 @@ public class Fish {
     /**
      * @return The current x-coordinate of the fish's center.
      */
-    public double getCenterX(){
+    public double getCenterX() {
         return x;
     }
 
@@ -65,41 +64,41 @@ public class Fish {
     /**
      * @return The current y-coordinate of the fish's center.
      */
-    public double getCenterY(){
+    public double getCenterY() {
         return y;
     }
 
     /**
      * Resets the fish's x-coordinate to a specified value after a horizontal hit.
      * @param reappearX The x-coordinate to reset the fish's position to.
-     * @return The updaate x-coordinate of the fish.
+     * The updaate x-coordinate of the fish.
     */
-    public double reset_X_ForHorizontalHit(double reappearX){
-        return x = reappearX;
+    public void reset_X_ForHorizontalHit(double reappearX) {
+        x = reappearX;
     }
 
     /**
      * Randomly resets the fish's horizontal velocity after a horizontal hit.
-     * @return The updated horizontal velocity of the fish.
+     * The updated horizontal velocity of the fish.
     */
-    public double reset_dx_ForHorizontalHit(){
-        return dx = rand.nextDouble(-100,-40);
+    public void reset_dx_ForHorizontalHit() {
+        dx = rand.nextDouble(-100,-40);
     }
 
     /**
      * Randomly resets the fish's vertical velocity after a horizontal hit.
-     * @return The updated vertical velocity of the fish.
+     * The updated vertical velocity of the fish.
     */
-    public double reset_dy_ForHorizontalHit(){
-        return dy = rand.nextDouble(-50,50);
+    public void reset_dy_ForHorizontalHit() {
+        dy = rand.nextDouble(-50,50);
     }
 
     /**
      * Inverts the fish's vertical velocity after a vertical hit.
      * @return The updated vertical velocity of the fish.
     */
-    public double reset_dy_ForVerticalHit(){
-        return this.dy = -dy;
+    public void reset_dy_ForVerticalHit() {
+        this.dy = -dy;
     }
     
     /**
@@ -121,7 +120,7 @@ public class Fish {
      * @param newX The new x-coordinate for the fish's center.
      * @param newY The new y-coordinate for the fish's center.
     */
-    public void setCenter(double newX, double newY ){
+    public void setCenter(double newX, double newY) {
         this.x = newX;
         this.y = newY;
         shape.setCenter(newX, newY);
@@ -132,7 +131,7 @@ public class Fish {
     /**
      * @return The current center point of the fish.
     */
-    public Point getCenter(){
+    public Point getCenter() {
         return shape.getCenter();
     }
 
@@ -146,7 +145,7 @@ public class Fish {
     /**
      * @return The HitBox object associated with this fish.
     */
-    public HitBox getHitbox(){
+    public HitBox getHitbox() {
         return hitBox;
     }
 
@@ -156,7 +155,7 @@ public class Fish {
      * @param other The other fish to check for overlap.
      * @return true if the two hitboxes overlap, false otherwise.
     */
-    private boolean overlapAmount(Fish other){
+    private boolean overlapAmount(Fish other) {
         double dx = this.getCenterX() - other.getCenterX();
         double dy = this.getCenterY() - other.getCenterY();
 
@@ -165,10 +164,11 @@ public class Fish {
 
         double normalizeX = dx/rx;
         double normalizeY = dy/ry;
+
         double overlapValue = normalizeX * normalizeX + normalizeY * normalizeY;
-        if (overlapValue <= 1.0){
+        if (overlapValue <= 1.0) {
             return true;
-        } else{
+        } else {
             return false;
         }
     }
@@ -182,18 +182,18 @@ public class Fish {
      * 
      * @param other The other fish to interact with.
     */
-    public void interactWith(Fish other){
-        if (this.scale == 0 || other.scale == 0){
+    public void interactWith(Fish other) {
+        if (this.scale == 0 || other.scale == 0) {
             return;
         }
-        if(!this.overlapAmount(other)){
+        if(!this.overlapAmount(other)) {
             return;
         }
-        if (this.scale > other.scale){
+        if (this.scale > other.scale) {
             this.grow(other.getScale());
             goDie(other);
 
-        } else if (this.scale < other.scale){
+        } else if (this.scale < other.scale) {
             other.grow(this.getScale());
             goDie(this);
         }
@@ -205,7 +205,7 @@ public class Fish {
      * 
      * @param f The fish that should "die".
      */
-    public void goDie(Fish f){
+    public void goDie(Fish f) {
         f.scale = 0;
         f.shape.setScale(0);
     }
@@ -213,7 +213,7 @@ public class Fish {
     /**
      * @return The current scale of the fish.
     */
-    public double getScale(){
+    public double getScale() {
         return this.scale;
     }
 

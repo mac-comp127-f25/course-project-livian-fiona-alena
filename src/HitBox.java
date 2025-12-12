@@ -22,7 +22,7 @@ public class HitBox {
      * @param radiusX The horizontal radius of the hitbox.
      * @param radiusY The vertical radius of the hitbox.
     */
-    public HitBox ( double centerX,double centerY, double radiusX, double radiusY){
+    public HitBox ( double centerX,double centerY, double radiusX, double radiusY) {
         this.x = centerX;
         this.y = centerY;
         this.radiusX = radiusX;
@@ -36,7 +36,7 @@ public class HitBox {
     /**
      * updates the radii of the hitbox when the fish grows.
      */
-    public void changeScale(double new_X_Radius, double new_Y_Radius){
+    public void changeScale(double new_X_Radius, double new_Y_Radius) {
         this.radiusX = new_X_Radius;
         this.radiusY = new_Y_Radius;
         hitBox.setPosition(x-radiusX, y-radiusY);
@@ -48,7 +48,7 @@ public class HitBox {
      * @param newX The new x-coordinate of the hitbox center.
      * @param newY The new y-coordinate of the hitbox center.
      */
-    public void setCenter(double newX, double newY){
+    public void setCenter(double newX, double newY) {
         this.x = newX;
         this.y = newY;
         hitBox.setCenter(newX,newY);
@@ -57,7 +57,7 @@ public class HitBox {
     /**
      * @return The Ellipse object representing the hitbox.
     */
-    public Ellipse getHitBoxShape(){
+    public Ellipse getHitBoxShape() {
         return hitBox;
     }
 
