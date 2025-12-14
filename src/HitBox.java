@@ -27,7 +27,6 @@ public class HitBox {
         this.y = centerY;
         this.radiusX = radiusX;
         this.radiusY = radiusY;
-        
         hitBox = new Ellipse(x-radiusX, y-radiusY, radiusX*2, radiusY*2);
         hitBox.setStroked(DEBUG_HIT_BOXES);
         hitBox.setFilled(false);
